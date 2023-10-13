@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -8,14 +9,14 @@ import (
 )
 
 var (
-	uiImage       *ebiten.Image
+	uiImage       = ebiten.NewImage(3, 3)
+	uiSubImage    = uiImage.SubImage(image.Rect(1, 1, 2, 2)).(*ebiten.Image)
 	uiFont        font.Face
 	uiFontMHeight int
 )
 
 func init() {
-	uiImage = ebiten.NewImage(1, 1)
-	uiImage.Fill(color.White)
+	uiImage.Fill(color.Black)
 }
 
 type Editor struct{}
@@ -25,7 +26,8 @@ func (e *Editor) Update() error {
 }
 
 func (e *Editor) Draw(screen *ebiten.Image) {
-	screen.DrawImage(uiImage, nil)
+	screen.Fill(color.RGBA{0xff, 0xff, 0xff, 0xff})
+	screen.DrawImage(uiSubImage, nil)
 }
 
 func (e *Editor) Layout(outsideWidth, outsideHeight int) (int, int) {
